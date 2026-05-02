@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PentestKit Pro</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Exo+2:wght@300;400;600;700;900&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- Animated background -->
+  <canvas id="bg-canvas"></canvas>
+
+  <!-- Scan line overlay -->
+  <div class="scanlines"></div>
+
+  <!-- Top bar -->
+  <header class="topbar">
+    <div class="logo">
+      <span class="logo-bracket">[</span>
+      <span class="logo-text">PENTEST</span>
+      <span class="logo-accent">KIT</span>
+      <span class="logo-bracket">]</span>
+      <span class="logo-version">v1.0</span>
+    </div>
+    <div class="status-bar">
+      <span class="status-dot" id="server-dot"></span>
+      <span id="server-status">CONNECTING...</span>
+      <span class="sep">|</span>
+      <span id="clock"></span>
+    </div>
+  </header>
+
+  <!-- Main layout -->
+  <div class="layout">
+
+    <!-- Sidebar navigation -->
+    <nav class="sidebar">
+      <div class="nav-group">
+        <div class="nav-label">// RECON</div>
+        <button class="nav-btn active" data-tool="ping">
+          <span class="nav-icon">◈</span> PING / HOST CHECK
+        </button>
+        <button class="nav-btn" data-tool="dns">
+          <span class="nav-icon">◈</span> DNS ENUMERATION
+        </button>
+        <button class="nav-btn" data-tool="whois">
+          <span class="nav-icon">◈</span> WHOIS LOOKUP
+        </button>
+        <button class="nav-btn" data-tool="subdomain">
+          <span class="nav-icon">◈</span> SUBDOMAIN SCAN
+        </button>
+      </div>
+      <div class="nav-group">
+        <div class="nav-label">// SCANNING</div>
+        <button class="nav-btn" data-tool="portscan">
+          <span class="nav-icon">◈</span> PORT SCANNER
+        </button>
+        <button class="nav-btn" data-tool="netscan">
+          <span class="nav-icon">◈</span> NETWORK SWEEP
+        </button>
+        <button class="nav-btn" data-tool="traceroute">
+          <span class="nav-icon">◈</span> TRACEROUTE
+        </button>
+      </div>
+      <div class="nav-group">
+        <div class="nav-label">// ANALYSIS</div>
+        <button class="nav-btn" data-tool="headers">
+          <span class="nav-icon">◈</span> HTTP HEADERS
+        </button>
+        <button class="nav-btn" data-tool="ssl">
+          <span class="nav-icon">◈</span> SSL/TLS INSPECTOR
+        </button>
+      </div>
+
+      <div class="sidebar-footer">
+        <div class="disclaimer">
+          ⚠ FOR AUTHORIZED USE ONLY
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main panel -->
+    <main class="main-panel">
+
+      <!-- Tool panels -->
+      <div id="tool-ping" class="tool-panel active">
+        <div class="panel-header">
+          <h2>PING / HOST DISCOVERY</h2>
+          <p class="panel-desc">Send ICMP packets to verify host availability and measure latency.</p>
+        </div>
+        <div class="input-row">
+          <div class="input-group">
+            <label>TARGET HOST / IP</label>
+            <input type="text" id="ping-target" placeholder="example.com or 192.168.1.1" />
+          </div>
+          <button class="run-btn" onclick="runPing()">
+            <span class="btn-text">EXECUTE</span>
+            <span class="btn-icon">▶</span>
+          </button>
+        </div>
+        <div id="ping-output" class="output-box hidden"></div>
+      </div>
+
+      <div id="tool-dns" class="tool-panel">
+        <div class="panel-header">
+          <h2>DNS ENUMERATION</h2>
+          <p class="panel-desc">Query all DNS record types: A, AAAA, MX, NS, TXT, CNAME, SOA and reverse DNS.</p>
+        </div>
+        <div class="input-row">
+          <div class="input-group">
+            <label>DOMAIN NAME</label>
+            <input type="text" id="dns-target" placeholder="example.com" />
+          </div>
+          <button class="run-btn" onclick="runDNS()">
+            <span class="btn-text">ENUMERATE</span>
+            <span class="btn-icon">▶</span>
+          </button>
+        </div>
+        <div id="dns-output" class="output-box hidden"></div>
+      </div>
+
+      <div id="tool-whois" class="tool-panel">
+        <div class="panel-header">
+          <h2>WHOIS LOOKUP</h2>
+          <p class="panel-desc">Query domain registration data, registrar, nameservers and expiry info.</p>
+        </div>
+        <div class="input-row">
+          <div class="input-group">
+            <label>DOMAIN / IP</label>
+            <input type="text" id="whois-target" placeholder="example.com" />
+          </div>
+          <button class="run-btn" onclick="runWhois()">
+            <span class="btn-text">QUERY</span>
+            <span class="btn-icon">▶</span>
+          </button>
+        </div>
+        <div id="whois-output" class="output-box hidden"></div>
+      </div>
+
+      <div id="tool-subdomain" class="tool-panel">
+        <div class="panel-header">
+          <h2>SUBDOMAIN ENUMERATOR</h2>
+          <p class="panel-desc">Brute-force common subdomain names using a built-in wordlist of 60+ entries.</p>
+        </div>
+        <div class="input-row">
+          <div class="input-group">
+            <label>BASE DOMAIN</label>
+            <input type="text" id="subdomain-target" placeholder="example.com" />
+          </div>
+          <button class="run-btn" onclick="runSubdomain()">
+            <span class="btn-text">ENUMERATE</span>
+            <span class="btn-icon">▶</span>
+          </button>
+        </div>
+        <div id="subdomain-output" class="output-box hidden"></div>
+      </div>
+
+      <div id="tool-portscan" class="tool-panel">
+        <div class="panel-header">
+          <h2>PORT SCANNER</h2>
+          <p class="panel-desc">Multi-threaded TCP port scanner with service detection and banner grabbing.</p>
+        </div>
+        <div class="input-row">
+          <div class="input-group">
+            <label>TARGET HOST / IP</label>
+            <input type="text" id="ps-target" placeholder="example.com or 192.168.1.1" />
+          </div>
+        </div>
+        <div class="options-row">
+          <div class="option-group">
+            <label>SCAN TYPE</label>
+            <select id="ps-type" onchange="togglePortOptions()">
+              <option value="common">Common Ports (25)</option>
+              <option value="range">Port Range</option>
+              <option value="custom">Custom Ports</option>
+            </select>
+          </div>
+          <div class="option-group" id="ps-range-group" style="display:none">
+            <label>PORT RANGE</label>
+            <input type="text" id="ps-range" placeholder="1-1024" value="1-1024" />
+          </div>
+          <div class="option-group" id="ps-custom-group" style="display:none">
+            <label>CUSTOM PORTS (comma-separated)</label>
+            <input type="text" id="ps-custom" placeholder="80,443,8080,3306" />
+          </div>
+          <button class="run-btn" onclick="runPortScan()">
+            <span class="btn-text">SCAN</span>
+            <span class="btn-icon">▶</span>
+          </button>
+        </div>
+        <div id="ps-output" class="output-box hidden"></div>
+      </div>
+
+      <div id="tool-netscan" class="tool-panel">
+        <div class="panel-header">
+          <h2>NETWORK SWEEP</h2>
+          <p class="panel-desc">Ping-sweep an entire subnet to discover live hosts. Max /24 (256 addresses).</p>
+        </div>
+        <div class="input-row">
+          <div class="input-group">
+            <label>CIDR RANGE</label>
+            <input type="text" id="net-cidr" placeholder="192.168.1.0/24" />
+          </div>
+          <button class="run-btn" onclick="runNetScan()">
+            <span class="btn-text">SWEEP</span>
+            <span class="btn-icon">▶</span>
+          </button>
+        </div>
+        <div id="net-output" class="output-box hidden"></div>
+      </div>
+
+      <div id="tool-traceroute" class="tool-panel">
+        <div class="panel-header">
+          <h2>TRACEROUTE</h2>
+          <p class="panel-desc">Trace the network path to a target host, revealing intermediate routers.</p>
+        </div>
+        <div class="input-row">
+          <div class="input-group">
+            <label>TARGET HOST / IP</label>
+            <input type="text" id="trace-target" placeholder="example.com or 8.8.8.8" />
+          </div>
+          <button class="run-btn" onclick="runTraceroute()">
+            <span class="btn-text">TRACE</span>
+            <span class="btn-icon">▶</span>
+          </button>
+        </div>
+        <div id="trace-output" class="output-box hidden"></div>
+      </div>
+
+      <div id="tool-headers" class="tool-panel">
+        <div class="panel-header">
+          <h2>HTTP HEADER ANALYSIS</h2>
+          <p class="panel-desc">Check HTTP security headers and get a security grade for the target.</p>
+        </div>
+        <div class="input-row">
+          <div class="input-group">
+            <label>URL</label>
+            <input type="text" id="hdr-target" placeholder="https://example.com" />
+          </div>
+          <button class="run-btn" onclick="runHeaders()">
+            <span class="btn-text">ANALYZE</span>
+            <span class="btn-icon">▶</span>
+          </button>
+        </div>
+        <div id="hdr-output" class="output-box hidden"></div>
+      </div>
+
+      <div id="tool-ssl" class="tool-panel">
+        <div class="panel-header">
+          <h2>SSL/TLS INSPECTOR</h2>
+          <p class="panel-desc">Inspect SSL certificate details, cipher suites, protocol versions and vulnerabilities.</p>
+        </div>
+        <div class="input-row">
+          <div class="input-group">
+            <label>HOSTNAME</label>
+            <input type="text" id="ssl-target" placeholder="example.com" />
+          </div>
+          <button class="run-btn" onclick="runSSL()">
+            <span class="btn-text">INSPECT</span>
+            <span class="btn-icon">▶</span>
+          </button>
+        </div>
+        <div id="ssl-output" class="output-box hidden"></div>
+      </div>
+
+    </main>
+
+    <!-- Results / Log panel -->
+    <aside class="log-panel">
+      <div class="log-header">
+        // SESSION LOG
+        <button class="clear-btn" onclick="clearLog()">CLEAR</button>
+      </div>
+      <div id="session-log"></div>
+    </aside>
+
+  </div><!-- /layout -->
+
+  <script src="script.js"></script>
+</body>
+</html>
