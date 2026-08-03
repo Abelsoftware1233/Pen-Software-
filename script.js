@@ -2,7 +2,7 @@
    PentestKit Pro – Frontend Logic
    ═══════════════════════════════════════════════════════════ */
 
-const API = "";  // Empty = same origin (Flask serves both)
+const API = "http://localhost:8080";  // Empty = same origin (Flask serves both)
 
 // ─── Animated Background ─────────────────────────────────────
 
