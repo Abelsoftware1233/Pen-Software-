@@ -41,7 +41,7 @@ chmod +x start.sh
 ./start.sh
 
 # 3. Open browser
-open http://localhost:5000
+open http://localhost:8080
 ```
 
 ### Manual start
