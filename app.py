@@ -538,6 +538,7 @@ def serve_static(path):
 if __name__ == "__main__":
     print("╔══════════════════════════════════════╗")
     print("║       PentestKit Pro v1.0            ║")
-    print("║  http://localhost:8080               ║")
+    print("║  http://87.106.41.140:8080
+               ║")
     print("╚══════════════════════════════════════╝")
     app.run(debug=False, host="0.0.0.0", port=8080)
