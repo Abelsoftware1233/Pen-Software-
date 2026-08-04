@@ -89,7 +89,7 @@ async function checkServer() {
     const r = await fetch(`${API}/api/ping`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ target: "127.0.0.1" }),
+      body: JSON.stringify({ target: "pen.abelsoftware123.com" }),
       signal: AbortSignal.timeout(3000)
     });
     const dot = document.getElementById("server-dot");
