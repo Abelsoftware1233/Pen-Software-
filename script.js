@@ -2,7 +2,7 @@
    PentestKit Pro – Frontend Logic
    ═══════════════════════════════════════════════════════════ */
 
-const API = "http://87.106.41.140:8080";  // Empty = same origin (Flask serves both)
+const API = window.location.origin;  // Empty = same origin (Flask serves both)
 
 // ─── Animated Background ─────────────────────────────────────
 
