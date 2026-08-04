@@ -5,6 +5,7 @@ set -e
 echo ""
 echo "  ╔══════════════════════════════════════════╗"
 echo "  ║         PentestKit Pro v1.0              ║"
+echo "  ║  http://87.106.41.140:8080               ║"
 echo "  ╚══════════════════════════════════════════╝"
 echo ""
 
@@ -29,8 +30,8 @@ source venv/bin/activate
 echo "  [*] Installing dependencies..."
 pip install -q -r requirements.txt
 
-# Launch with correct binding for port 8080 and external traffic
-echo "  [*] Starting server on http://0.0.0.0:8080 (pen.abelsoftware123.com)"
+# Launch on correct IP and port 8080
+echo "  [*] Starting server on http://87.106.41.140:8080 (pen.abelsoftware123.com)"
 echo "  [*] Press Ctrl+C to stop"
 echo ""
 python3 -c "from app import app; app.run(host='0.0.0.0', port=8080)"
