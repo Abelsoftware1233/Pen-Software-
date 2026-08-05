@@ -2,8 +2,7 @@
    PentestKit Pro – Frontend Logic
    ═══════════════════════════════════════════════════════════ */
 
-const API = window.location.origin;  // Empty = same origin (Flask serves both)
-
+const API = "https://pen.abelsoftware123.com";  // Backend draait apart van GitHub Pages frontend
 // ─── Animated Background ─────────────────────────────────────
 
 (function initBackground() {
